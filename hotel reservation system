@@ -1,0 +1,694 @@
+#include <iostream> 
+#include <iomanip> 
+#include <cmath> 
+#include <array> 
+#include <random> 
+#include <ctime> 
+#include <cstdlib> 
+#include <cstring> 
+#include <string> 
+using namespace std; 
+ int Cid=-1;//will help in getting wright Customer Number throughout the program 
+ int CidL =-1;  
+ int CidD =-1; 
+const int  common = 10;//common 
+const int luxury = 10;//luxury 
+const  int deluxe = 10;//deluxe  
+ 
+bool Carray[common] = {};//initially all Rooms are AVAILABLE  
+bool Larray[luxury] = {}; 
+bool Darray[deluxe] = {}; 
+ 
+int CustID2C[common]={}; 
+int CustID2L[luxury]={}; 
+int CustID2D[deluxe]={}; 
+//Functions for user ; 
+void CommonRooms (bool Carray[common],int CustIDC[common],int KeyNoC[common],int daysCom[common],string CusNameC[common], int Cid);//Prototype of User View common 
+void LuxuryRooms (bool Larray[luxury] , int CustIDL[luxury],int KeyNoL[luxury],int daysLux[luxury],string CusNameL[luxury],int CidL );//prototype of USER view luxury 
+void DeluxeRooms (bool Darray[deluxe],int CustIDD[deluxe], int KeyNoD[deluxe],int daysDel[deluxe],string CusNameD[deluxe],int CidD);//Prototype of USER View  deluxe 
+//Functions for ADMIN; 
+void AdminCommon (int CustIDC[common],int KeyNoC[common],int daysCom[common] ,string CusNameC[common]);//Prototype of ADMIN VIEW COMMON 
+void AdminLuxury (int CustIDL[luxury],int KeyNoL[luxury],int daysLux[luxury],string CusNameL[luxury]);//Prototype of ADMIN VIEW Luxury 
+void AdminDeluxe (int CustIDD[deluxe],int KeyNoD[deluxe],int daysDel[deluxe] ,string CusNameD[deluxe]);//Prototype of ADMIN VIEW Deluxe 
+ 
+void BillCom (int daysCom[common] );//Prototype 
+void BillLux (int daysLux[luxury]);//Prototytpe 
+void BillDel (int daysDel[deluxe]);//Prototype 
+ 
+ 
+int main() 
+{ 
+int KeyNoC [common]={},KeyNoL[luxury]={},KeyNoD[deluxe]={}; 
+int CustIDC [10]={},CN=0,CustIDL[10]={},CustIDD[10]={}; 
+int choice,r=0; 
+char  repeat; 
+for (int i = 0 ; i < 10 ; i++) 
+{ 
+  default_random_engine comm (static_cast <unsigned int> (time (0))); 
+  uniform_int_distribution <unsigned int > key (201,250); 
+KeyNoC[i] = key(comm);  
+ 
+default_random_engine lux (static_cast <unsigned int> (time (0))); 
+  uniform_int_distribution <unsigned int > keys (251,300); 
+KeyNoL[i] = keys(lux); 
+ 
+default_random_engine del (static_cast <unsigned int> (time (0))); 
+  uniform_int_distribution <unsigned int > keyss (301,350); 
+KeyNoD[i] = keyss(del);  
+ 
+ default_random_engine Common(static_cast <unsigned int> (time (0))); 
+     uniform_int_distribution <unsigned int> IDC(1,50); 
+         CustIDC[i] = IDC(Common); 
+ 
+ default_random_engine Luxury(static_cast <unsigned int> (time (0))); 
+     uniform_int_distribution <unsigned int> IDL(51,100); 
+         CustIDL[i] = IDL(Luxury); 
+ 
+ default_random_engine Deluxe(static_cast <unsigned int> (time (0))); 
+     uniform_int_distribution <unsigned int> IDD(101,150); 
+         CustIDD[i] = IDD(Deluxe); 
+ }//for ends  //Alloting key numbers and CustID's 
+ 
+string CusNameC[common]={}; 
+string CusNameL[luxury]={}; 
+string CusNameD[deluxe]={}; 
+int daysCom[common]={}; 
+int daysLux[luxury]={}; 
+int daysDel[deluxe]={}; 
+do 
+{ system ("cls"); 
+ 
+cout << "*********WELCOME TO SEFI HOTEL********** \n " << endl; 
+cout << "  \n \n *****MAIN MENU***** " << endl; 
+cout << " \n 1.USER \n 2.ADMIN " << endl; 
+cout << " Kindly, press 1 or 2 only " << endl; 
+cin >> choice; 
+switch (choice) 
+{ 
+case 1://CUSTOMER 
+Cid++; 
+if ( Cid % 10 == 0 )  
+{ 
+Cid= -1; 
+           CidL= -1;  
+           CidD= -1; 
+   Cid++; 
+} 
+CidL++; 
+CidD++; 
+ 
+cout << "\n\n*****USER******\n\n"<<endl; 
+cout << "\nWelcome SIR,\nwould you like to view the rooms ? \n Press Y/y to continue. " << endl; 
+cin >> repeat; 
+char response1; 
+if (repeat == 'y' || repeat == 'Y') 
+{  
+char response1; 
+    int choice1; 
+do{ 
+    cout << "\nFollowing are the categories of room.\nSelect any one from the following,\n 1.COMMON ROOMS (50USD /day) \n 2.LUXURY ROOMS (100USD /day) \n 3.DELUXE ROOMS (150USD / day)\n " << endl; 
+    cin >> choice1; 
+         switch (choice1) 
+   { 
+                case 1: 
+ 
+CommonRooms(Carray,CustIDC,KeyNoC,daysCom,CusNameC,Cid);//invoke  
+break; 
+                case 2 : 
+LuxuryRooms(Larray,CustIDL,KeyNoL,daysLux,CusNameL,Cid);//invoke  
+break; 
+                case 3: 
+DeluxeRooms(Darray,CustIDD,KeyNoD,daysDel,CusNameD,Cid);//invoke  
+break; 
+                default: 
+cout << "Wrong Number!! " << endl; 
+            break; 
+    }//choice1 switch ends 
+   cout << "\nDo You want to reserve rooms from any other category ? press Y/y to continue\n " << endl; 
+   cin >> response1;}while (response1 == 'y' || response1 == 'Y');//do while ends 
+ 
+        }//if ends 
+else 
+{cout << "\nThanks you for coming\n " << endl;} 
+cout << "\n\n\n Would you like to see the ADMIN Portion also ? press Y/y to Continue \n" << endl; 
+cin >> response1; 
+if (response1 == 'y' || response1 == 'Y');//will continue to compile 
+else  
+break;//will skip or will serve as a break case 
+/*break;*///case1 ends(customer) 
+ 
+case 2://ADMIN 
+cout << "\n\n****ADMIN*****" << endl; 
+string  pass  = "apple"; 
+string pass1; 
+int t=0; 
+u:if (t > 4) 
+{ 
+cout << "You Are not an Admin\n" << endl; 
+break; 
+} 
+        cout << "\nEnter Password " <<endl; 
+cin>>pass1; 
+ 
+ if (pass1 == pass)//password checker 
+{ 
+int input,choice2; 
+char repeatA; 
+cout << "\nAccess Granted!!\n\n What Would You Like to do ? " << endl; 
+cout << "\n 1.Rooms Status \n 2.Billing Details \n \n " << endl; 
+cin >>input; 
+switch (input) 
+{ 
+case 1: 
+ 
+do 
+{ 
+cout << "\nSelect a Room Category" << endl; 
+cout << "\n 1.COMMON ROOMS \n 2.LUXURY ROOMS  \n 3.DELUXE ROOMS\n " << endl; 
+            cin >> choice2; 
+switch (choice2) 
+{ 
+            case 1:  
+AdminCommon ( CustIDC, KeyNoC,daysCom ,CusNameC); 
+break; 
+case 2: 
+AdminLuxury( CustIDL, KeyNoL,daysLux ,CusNameL); 
+break; 
+case 3 : 
+AdminDeluxe( CustIDD, KeyNoD,daysDel ,CusNameD); 
+break; 
+default:  
+cout << "\nInvalid Number\n " << endl; 
+break;//optional 
+} 
+cout <<"\n\n Would you like to See the Status of any other Room Category also ? \n\n" << endl; 
+cin >> repeatA ; 
+}while (repeatA == 'y' || repeatA == 'Y'); //do while ends 
+ 
+cout <<"\nWould You Like to see The Total Bills also ? \n Press Y/y to continue." << endl; 
+cin >> repeatA; 
+if (repeatA == 'y' || repeatA == 'Y');//will continue to compile if input is yes 
+          
+else  
+break;//will serve as a break case 
+/*break;*/ 
+case 2 : 
+char rep; 
+int choice3; 
+do 
+{ 
+                  cout << "\nTotal Bill Of Which Room Category  would you like to see " << endl; 
+cout << "\n\n 1.COMMON ROOMS \n 2.LUXURY ROOMS  \n 3.DELUXE ROOMS \n" << endl; 
+                cin >> choice3; 
+switch (choice3) 
+{ 
+case 1 : 
+BillCom(daysCom);//invoke 
+break; 
+case 2: 
+BillLux(daysLux);//invoke 
+break; 
+case 3 :  
+BillDel(daysDel);//invoke 
+break;  
+default : 
+cout << "Invalid Input " << endl; 
+break; 
+ 
+}// choice3 switch ends 
+cout << "\nWould you like to see the Total Bills of any other category also ? Press Y/y to continue \n" << endl; 
+cin >>rep; 
+}while(rep == 'y' || rep == 'Y'); 
+ 
+                break; 
+} //switch of case2 ends    
+    }//if ends 
+ else  
+ { 
+ 
+ cout <<"Wrong Password!!! Try again\n " << endl; 
+             t++; 
+ cout << "\n"<<5-t<< " Times left " << endl; 
+         goto u;//will direct to type password again  
+ //if we Dont use 'Goto' Statement we have to increase the length of our code. 
+     }//else ends ....wrong password 
+ 
+ break;//case2 admin close. 
+     
+} //switch ends 
+cout <<"Would you Like to Run Whole Program again ? Press Y/y to continue " << endl; 
+cin >> repeat;  }while (repeat == 'y' || repeat == 'Y' ); // MAIN  DO WHILE ENDS 
+r++; 
+}//main ends 
+ 
+//_______________________________________________________________________________________ 
+//_______________________________________________________________________________________ 
+// Function startssss 
+ 
+//Admin Functions starts 
+ 
+void AdminCommon (int CustIDC[common],int KeyNoC[common],int daysCom[common] ,string CusNameC[common]) 
+{ 
+char reserve; 
+int  RoomNo,n=0; 
+ 
+cout << " WE have " << common  <<"  COMMON ROOMS \n0 = AVAILABLE \n1 = RESERVED " << endl; 
+cout << "ROOM NO " << setw(8) << "STATUS" << setw(12) << "CUST ID " << setw(12) <<"CUSTOMER NAME" << setw(10)<< "STAY DAYS" << setw(10) << "KEY NO." << endl; 
+for (int i = 0; i < common; i++) 
+{ 
+cout << i + 1 << setw(10) << Carray[i]; 
+if (Carray[i] == 1 ) 
+{ 
+cout << setw(12)<<CustID2C[i] << setw(12) << CusNameC[i]<< setw(13)<<daysCom[i]<<setw(10)<< KeyNoC[i] ; 
+} 
+cout << endl; 
+     }//for ends 
+cout << "Would u like to change the status of any room ?\nPress y\Y to continue "<< endl; 
+cin >> reserve ;//yes or no  
+while ( reserve == 'y' || reserve == 'Y')  
+{ 
+i:cout << "Select any RESERVEDI(1) Room No.  which you want to change in AVAILABLE(0). OR prres -1 to exit " << endl; 
+cin >> RoomNo; 
+ if ( RoomNo == -1 ) 
+ {break;} 
+else if ( RoomNo != -1) 
+{ 
+if ( Carray[RoomNo-1]  == 0) 
+  { 
+   cout << "\nIt is Already AVAILABLE(0) \n " << endl; 
+  cout << "WARNING!!! You Can Only change from RESERVED(1) to AVAILABLE(0) " << endl; 
+   }//if ends 
+else if  (Carray [RoomNo-1] == 1) 
+{ 
+cout <<"Do You want to Change Room No. " << RoomNo << " from RESERVED(1) to AVAILABLE(0) ?\n Press Y/y to continue " << endl; 
+cin >> reserve ; 
+if ( Carray[RoomNo-1] == 1 && reserve == 'y' || reserve == 'Y') 
+   { 
+                    Carray[RoomNo-1] = 0 ; 
+cout << "Room No. " << RoomNo << " is Now  AVAILABLE(0) " << endl; 
+   } 
+else if (reserve == 'n' || reserve == 'N') 
+{goto i ; } 
+else if (reserve != 'y' || reserve == 'y'); 
+ 
+else  
+{cout << "Its already RESERVED(1) " << endl;} 
+} 
+//else ends 
+cout << "\nThe Room Status After Changes is \n \n \n " << endl; 
+cout << "ROOM NO " << setw(8) << "STATUS" << setw(12) << "CUST ID " << setw(12) <<"CUSTOMER NAME" << setw(10)<< "STAY DAYS" << setw(10) << "KEY NO." << endl; 
+for (int i = 0; i < common; i++) 
+{ 
+cout << i + 1 << setw(10) << Carray[i]; 
+if (Carray[i] == 1 ) 
+{ 
+cout << setw(12)<<CustID2C[i] << setw(12) << CusNameC[i]<< setw(13)<<daysCom[i]<<setw(10)<< KeyNoC[i] ; 
+} 
+cout << endl; 
+     }//for ends 
+     }//else if ends 
+ 
+}//while ends 
+}//AdminCommon function ends 
+ 
+//________________________________________________________________________________________ 
+ 
+void AdminLuxury (int CustIDL[luxury],int KeyNoL[luxury],int daysLux[luxury],string CusNameL[luxury]) 
+{ 
+   char reserve; 
+int RoomNo,n=0; 
+ 
+cout << "\n WE have " << luxury<< " LUXURY ROOMS \n0 = AVAILABLE \n1 = RESERVED " << endl; 
+cout << "\n ROOM NO " << setw(8) << "STATUS" << setw(12) << "CUST ID " << setw(12) <<"CUSTOMER NAME" << setw(10)<<"STAY DAYS" << setw(10)<< "KEY NO." << endl; 
+for (int i = 0; i < luxury ; i++) 
+{ 
+cout << i + 1 << setw(12) << Larray[i]; 
+if (Larray[i] == 1 ) 
+{ 
+cout << setw(12)<<CustID2L[i] << setw(12) << CusNameL[i]<< setw(13)<<daysLux[i]<<setw(10)<< KeyNoL[i] ; 
+} 
+cout << endl; 
+     }//for ends 
+cout << "\nWould u like to change the status of any room ?\nPress y\Y to continue "<< endl; 
+cin >> reserve ;//yes or no  
+while ( reserve == 'y' || reserve == 'Y')  
+{ 
+t:cout << "\nSelect any RESERVEDI(1) Room No.  which you want to change in AVAILABLE(0). OR prres -1 to exit " << endl; 
+cin >> RoomNo; 
+ if ( RoomNo == -1 ) 
+ {break;} 
+else if ( RoomNo != -1) 
+{ 
+if ( Larray[RoomNo-1]  == 0) 
+  { 
+   cout << "\nIt is Already AVAILABLE(0) \n " << endl; 
+  cout << "\nWARNING!!! You Can Only change from RESERVED(1) to AVAILABLE(0) " << endl; 
+   }//if ends 
+else if  (Larray [RoomNo -1] == 1) 
+{ 
+cout <<"\nDo You want to Change Room No. " << RoomNo << " from RESERVED(1) to AVAILABLE(0) ?\n Press Y/y to continue " << endl; 
+cin >> reserve ; 
+if ( Larray[RoomNo-1] == 1 && reserve == 'y' || reserve == 'Y') 
+   { 
+                    Larray[RoomNo-1] = 0 ; 
+cout << "\nRoom No. " << RoomNo << " is Now  AVAILABLE(0) " << endl; 
+   } 
+else if (reserve != 'y' || reserve != 'Y') 
+goto t ;  
+else  
+cout << "\nIts already RESERVED(1) " << endl; 
+} 
+//else ends 
+cout << "\nThe Room Status After Changes is \n \n \n " << endl; 
+cout << "\nROOM NO " << setw(8) << "STATUS" << setw(12) << "CUST ID " << setw(12) <<"CUSTOMER NAME" << setw(10)<<"STAY DAYS" << setw(10)<< "KEY NO." << endl; 
+for (int i = 0; i < luxury ; i++) 
+{ 
+cout << i + 1 << setw(10) << Larray[i]; 
+if (Larray[i] == 1 ) 
+{ 
+cout << setw(12)<<CustID2L[i] << setw(12) << CusNameL[i]<< setw(13)<<daysLux[i]<<setw(10)<< KeyNoL[i] ; 
+} 
+cout << endl; 
+     }//for ends 
+     }//else if ends 
+ 
+}//while ends 
+}//AdminLuxury Functions  Ends 
+ 
+//__________________________________________________________________________________________________________ 
+ 
+void AdminDeluxe (int CustIDD[deluxe],int KeyNoD[deluxe] ,int daysDel[deluxe],string CusNameD[deluxe]) 
+{ 
+   char reserve; 
+int RoomNo,n=0; 
+ 
+cout << " \nWE have "<<deluxe<<" DELUXE ROOMS \n0 = AVAILABLE \n1 = RESERVED " << endl; 
+cout << "\nROOM NO " << setw(8) << "STATUS" << setw(12) << "CUST ID " << setw(12) <<"CUSTOMER NAME"<<setw(10)<<"STAY DAYS" << setw(10)<< "KEY NO." << endl; 
+for (int i = 0; i < deluxe; i++) 
+{ 
+cout << i + 1 << setw(12) << Darray[i]; 
+if (Darray[i] == 1 ) 
+{ 
+cout << setw(12)<<CustID2D[i] << setw(12) << CusNameD[i]<< setw(13)<<daysDel[i]<<setw(10) << KeyNoD[i] ; 
+} 
+cout << endl; 
+     }//for ends 
+cout << "\nWould u like to change the status of any room ?\nPress y\Y to continue "<< endl; 
+cin >> reserve ;//yes or no  
+while ( reserve == 'y' || reserve == 'Y')  
+{ 
+l:cout << "\nSelect any RESERVEDI(1) Room No.  which you want to change in AVAILABLE(0). OR prres -1 to exit " << endl; 
+cin >> RoomNo; 
+ if ( RoomNo == -1 ) 
+ {break;} 
+else if ( RoomNo != -1) 
+{ 
+if ( Darray[RoomNo-1]  == 0) 
+  { 
+   cout << "\nIt is Already AVAILABLE(0) \n " << endl; 
+  cout << "\nWARNING!!! You Can Only change from RESERVED(1) to AVAILABLE(0) " << endl; 
+   }//if ends 
+else if  (Darray [RoomNo -1] == 1) 
+{ 
+cout <<"\nDo You want to Change Room No. " << RoomNo << " from RESERVED(1) to AVAILABLE(0) ?\n Press Y/y to continue " << endl; 
+cin >> reserve ; 
+if ( Darray[RoomNo-1] == 1 && reserve == 'y' || reserve == 'Y') 
+   { 
+                    Darray[RoomNo-1] = 0 ; 
+cout << "\nRoom No. " << RoomNo << " is Now  AVAILABLE(0) " << endl; 
+   } 
+else if (reserve != 'Y' || reserve != 'y') 
+goto l ;  
+else  
+cout << "\nIts already RESERVED() " << endl; 
+} 
+//else ends 
+cout << "\nThe Room Status After Changes is \n \n \n " << endl; 
+cout << "\nROOM NO " << setw(8) << "STATUS" << setw(12) << "CUST ID " << setw(12) <<"CUSTOMER NAME"<<setw(10)<<"STAY DAYS" << setw(10)<< "KEY NO." << endl; 
+for (int i = 0; i < deluxe; i++) 
+{ 
+cout << i + 1 << setw(10) << Darray[i]; 
+if (Darray[i] == 1 ) 
+{ 
+cout << setw(12)<<CustID2D[i] << setw(12) << CusNameD[i]<< setw(13)<<daysDel[i]<<setw(6) << KeyNoD[i] ; 
+} 
+cout << endl; 
+     }//for ends 
+     }//else if ends 
+ 
+  }//while ends 
+ 
+}//AdminDeluxe Function ends 
+//_____________________________________________________________________________________________________ 
+//______________________________________________________________________________________________________ 
+//_____________________________________________________________________________________________________ 
+ 
+//USERS  FUNCTIONS STARTSSS//// 
+ 
+void CommonRooms(bool Carray[common],int CustIDC[common], int KeyNoC[common],int daysCom[common],string CusNameC[common], int Cid)// 
+{ 
+ 
+char reserve; 
+int RoomNo,n=0; 
+cout << "\n WE have " << common << " COMMON ROOMS \n0 = AVAILABLE \n1 = RESERVED " << endl; 
+cout << "\nROOM NO " << setw(8) << "STATUS" << endl; 
+for (int i = 0; i < common; i++) 
+{ 
+cout << i + 1 << setw(10) << Carray[i]; 
+cout << endl; 
+}//for ends 
+cout << " \nWould u like to reserve any room sir ? \n Press Y/y to continue " << endl; 
+cin >> reserve ;  
+while ( reserve == 'y' || reserve == 'Y') 
+{ 
+cout <<"\nWhich Room No. Would you like Reserve sir (select any valid room no.) \n" << endl; 
+    cin >> RoomNo; 
+if ( RoomNo > 10 || RoomNo < 1 )  
+{ 
+cout <<RoomNo << "\nThe Room No. "<<RoomNo<<" does Not Exist in our hotel " << endl; 
+break; 
+} 
+else  
+{ 
+    if ( Carray [RoomNo-1] == 0 )  
+   {  
+                 Carray[RoomNo-1] = 1 ; 
+ CustID2C[RoomNo-1]= CustIDC[Cid]; 
+ cout << "\n Kindly Enter Some information \n " << endl; 
+ cout << "\n***********************************************************" << endl; 
+ cout << "\n Enter your first name only (e.g. Terry)\n " << endl; 
+ cin >> CusNameC[RoomNo-1]; 
+ cout << "\n For how many days are you going to stay? (kindly enter only numeric values)\n" << endl; 
+ cin >> daysCom[RoomNo-1]; 
+  
+ cout << "\n***********************************************************"<< endl; 
+ cout <<"\nRoom No " << RoomNo  <<" Has now been reserved by " << CusNameC[RoomNo-1]<<"\n"<< endl ;  
+cout << "Your CustomerID  is : " << CustID2C[RoomNo-1] << " and Your Room's Key Number is " << KeyNoC[RoomNo-1]<<endl; 
+cout << "\n\n\n" << endl; 
+       }//if ends 
+  else  
+ { 
+              cout << "\nThis Room No is Already Reserved sir. \n select any other Room ,sir " << endl; 
+  cout << endl; 
+ 
+ }//else ends 
+cout << "\nWould you like to reserve any other room sir? Press Y/y to continue " << endl; 
+cin >> reserve; 
+if ( reserve == 'n' || reserve == 'N'); 
+else if(reserve != 'y' || reserve != 'Y'); 
+       n++;//just to print thank for visiting OR Thanks for  reserving room down below 
+}//while ends 
+if(  n == 0 )  
+{cout << "\nThank You for visiting.Have a nice day :) " << endl;}//else ends 
+else   
+{cout << "\nThanks for Reserving Rooms sir,Hope u enjoy "<< endl;} 
+} 
+}//CommonRooms Function ends 
+ 
+//_______________________________________________________________________ 
+void LuxuryRooms (bool Larray[luxury],int CustIDL[luxury], int KeyNoL[luxury],int daysLux[luxury],string CusNameL[luxury],int CidL) 
+{ 
+   char reserve; 
+int RoomNo,n=0; 
+cout << " \nWE have " << common << " LUXURY ROOMS \n0 = AVAILABLE \n1 = RESERVED " << endl; 
+cout << "\nROOM NO " << setw(8) << "STATUS" << endl; 
+for (int i = 0; i < luxury; i++) 
+{ 
+cout << i + 1 << setw(10) << Larray[i]; 
+cout << endl; 
+}//for ends 
+cout << "\n Would u like to reserve any room sir ? \n Press Y/y to continue " << endl; 
+cin >> reserve ;  
+while ( reserve == 'y' || reserve == 'Y') 
+{ 
+cout <<"\nWhich Room No. Would you like Reserve sir (select any valid room no.) \n" << endl; 
+    cin >> RoomNo; 
+if ( RoomNo > 10 || RoomNo < 1 )  
+{ 
+cout <<RoomNo << "\nThe Room No. "<<RoomNo<<" does Not Exist in our hotel\n " << endl; 
+break; 
+} 
+else  
+{ 
+    if ( Larray [RoomNo-1] == 0 )  
+   {  
+                 Larray[RoomNo-1] = 1 ; 
+ CustID2L[RoomNo-1]= CustIDL[CidL]; 
+ cout << "\n Kindly Enter Some information \n " << endl; 
+ cout << "\n***********************************************************" << endl; 
+ cout << " \nEnter your fist name only (e.g. Terry)\n " << endl; 
+ cin >> CusNameL[RoomNo-1]; 
+ cout << "\n For how many days are you going to stay?(kindly enter only numeric values)\n" << endl; 
+ cin >> daysLux[RoomNo-1]; 
+ cout << "\n***********************************************************\n"<< endl; 
+ cout <<"\nRoom No " << RoomNo  <<" Has now been reserved by " << CusNameL[RoomNo-1]<<"\n"<< endl ;  
+cout << "\nYour CustomerID  is : " << CustID2L[RoomNo-1] << " and Your Room's Key Number is " << KeyNoL[RoomNo-1]<<endl; 
+cout << "\n\n\n" << endl; 
+       }//if ends 
+  else  
+ { 
+              cout << "\nThis Room No is Already Reserved sir. \n select any other Room ,sir " << endl; 
+  cout << endl; 
+ }//else ends 
+cout << "\nWould you like to reserve any other room sir? \nPress Y/y to continue " << endl; 
+cin >> reserve; 
+if ( reserve == 'n' || reserve == 'N'); 
+else if(reserve != 'y' || reserve != 'Y');//wrong input checker 
+ 
+       n++;//just to print "thanks for visiting" OR "Thanks for reserving room" down below 
+}//while ends 
+if(  n == 0 )  
+{cout << "\nThank You for visiting.Have a nice day :) " << endl;}//else ends 
+else   
+{cout << "\nThanks for Reserving Rooms sir,Hope u enjoy "<< endl;} 
+ 
+        }//else ends 
+}//LuxuryRooms Function ends 
+ 
+//_____________________________________________ 
+ 
+void DeluxeRooms(bool Darray[deluxe], int CustIDD[deluxe],int KeyNoD[deluxe],int daysDel[deluxe],string CusNameD[deluxe],int CidD) 
+{ 
+char reserve; 
+int RoomNo,n=0; 
+cout << " \nWE have " << deluxe << " DELUXE ROOMS \n0 = AVAILABLE \n1 = RESERVED " << endl; 
+cout << "\nROOM NO " << setw(8) << "STATUS" << endl; 
+for (int i = 0; i < deluxe; i++) 
+{ 
+cout << i + 1 << setw(10) << Darray[i]; 
+cout << endl; 
+}//for ends 
+cout << " \nWould u like to reserve any room sir ? \n Press Y/y to continue " << endl; 
+cin >> reserve ;  
+while ( reserve == 'y' || reserve == 'Y') 
+{ 
+cout <<"\nWhich Room No. Would you like Reserve sir \n" << endl; 
+    cin >> RoomNo; 
+if ( RoomNo > 10 || RoomNo < 1 )  
+{ 
+cout <<RoomNo << "\nThe Room No. "<<RoomNo<<" does Not Exist in our hotel " << endl; 
+break; 
+} 
+else  
+{ 
+    if ( Darray [RoomNo-1] == 0 )  
+   {  
+                 Darray[RoomNo-1] = 1 ; 
+ CustID2D[RoomNo-1]= CustIDD[CidD]; 
+ cout << "\n Kindly Enter Some information \n " << endl; 
+ cout << "\n***********************************************************" << endl; 
+ cout << "\n enter your fist name only (e.g. Terry)\n " << endl; 
+ cin >> CusNameD[RoomNo-1]; 
+ cout << "\n For how many days are you going to stay?(kindly enter only numeric values)\n" << endl; 
+ cin >> daysDel[RoomNo-1]; 
+ cout << "\n***********************************************************\n"<< endl; 
+ cout <<"\nRoom No " << RoomNo  <<" Has now been reserved by " << CusNameD[RoomNo-1]<<"\n"<< endl ;  
+cout << "\nYour CustomerID  is : " << CustID2D[RoomNo-1] << " and Your Room's Key Number is " << KeyNoD[RoomNo-1]<<endl; 
+cout << "\n\n\n" << endl; 
+       }//if ends 
+  else  
+ { 
+              cout << "\nThis Room No is Already Reserved sir. \n select any other Room ,sir " << endl; 
+  cout << endl; 
+ 
+ }//else ends 
+cout << "\nWould you like to reserve any other room sir? Press Y/y to continue " << endl; 
+cin >> reserve; 
+if ( reserve == 'n' || reserve == 'N'); 
+else if(reserve != 'y' || reserve != 'Y')//wrong input checker 
+ 
+       n++;//just to print thank for visiting OR Thanks for  reserving room down below 
+}//while ends 
+if(  n == 0 )  
+{cout << "\nThank You for visiting.Have a nice day :) " << endl;} 
+else   
+{cout << "\nThanks for Reserving Rooms sir,Hope u enjoy "<< endl;} 
+ 
+ }//else ends 
+}//DeluxeRooms functions endss 
+ 
+//______________________________________________________________________________________________________ 
+//______________________________________________________________________________________________________ 
+ 
+//Bill functions for admin  
+ 
+void BillCom(int daysCom[common]) 
+{ 
+float tot; 
+int x1 =0;//will count number of  common reserved rooms 
+int DaysSum=0; 
+for ( int i = 0 ; i < common ; i++) 
+{ 
+if (Carray [i]== 1 ) 
+{ 
+x1++; 
+DaysSum +=daysCom[i];  
+    } 
+}//for ends 
+tot = x1 * 50 * DaysSum; 
+cout << "\nTotal Collection  from Common Rooms is = " << tot <<" USD"<< endl; 
+}//BillCom function ends 
+ 
+//__________________________________________________________ 
+ 
+void BillLux(int daysLux[luxury]) 
+{ 
+float tot; 
+int x2 = 0 ;//will count number of luxury reserved rooms 
+int DaysSum=0; 
+for ( int k = 0 ; k < luxury ; k++) 
+{ 
+if (Larray [k]== 1 ) 
+{ 
+x2++;//will count number of luxury reserved rooms  
+DaysSum +=daysLux[k]; 
+    } 
+     
+}//for ends 
+tot = x2 * 100 * DaysSum; 
+cout << "\nTotal Collection  from Luxury Rooms is = " << tot <<" USD"<< endl; 
+}//BillLux Function ends 
+//___________________________________________________________ 
+ 
+void BillDel (int daysDel[deluxe]) 
+{ 
+float tot ; 
+int x3 =0 ;//will count number of deluxe rooms 
+ int DaysSum = 0; 
+for ( int j = 0 ; j < deluxe ; j++) 
+{ 
+if (Darray [j]== 1 ) 
+{ 
+x3++;//will count deluxe reserved rooms 
+DaysSum += daysDel[j]; 
+} 
+}//for ends 
+tot = x3 * 150 * DaysSum; 
+cout << "\nTotal Collection  from Deluxe Rooms is = " << tot <<" USD"<< endl; 
+}//BillDel Functions ends 
+ 
+//__________________________________________________________ 
+ 
+//***********************************************************  PROGRAMS ENDSSSSS ******************************************************** 
+ 
+ 
